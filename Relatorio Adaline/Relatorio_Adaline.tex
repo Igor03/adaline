@@ -1,0 +1,167 @@
+\documentclass[12pt]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry}
+\usepackage{graphics, graphicx}
+\usepackage{setspace}
+\usepackage{pdflscape}
+\usepackage{multicol}
+\usepackage{algpseudocode, algorithm}
+\usepackage{natded}
+\usepackage{indentfirst}
+\pagestyle{myheadings}
+%\usepackage[]{algorithm2e}
+%\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{verbatim}
+
+
+	\thispagestyle{empty}
+    \begin{document}
+        
+	\begin{center}
+		\textbf{Instituto Federal de Educação, Ciência e Tecnologia do Ceará}
+		
+		\textbf{Bacharelado em Ciência da Computação 2017.2}
+		
+		\textbf{Disciplina:} Redes Neurais Artificiais
+		
+		\textbf{Professor:} Ajalmar Rocha
+		
+		\textbf{Aluno:} José Igor de Carvalho	
+			
+	\end{center}
+
+    
+\hline
+\begin{center}
+    \huge{\textbf{Relatório 2:}}
+    
+    \huge{\textbf{Adaline}}
+\end{center}
+\hline
+
+\section{Introdução}
+   \noindent
+   O modelo \textit{Adaline} (Adptive Linear Element) é um tipo de rede neural artificial de camada única baseado no neurônio de McCulloch-Pitts. Este modelo foi desenvolvido em 1960 por Bernard Widrow e Marcian Hoff e, diferentemente do Perceptron, seu principal objetivo é a regressão linear, isto é, o modelo gera os coeficientes de uma função que aproxima de um resultado esperado $y$ a saída para determinada entrada $x$.
+   
+   O objetivo deste documento é analisar a eficiência deste modelo quando aplicado à dois conjuntos de dados artificiais distintos. Um destes conjuntos é baseado em uma função de variável única, enquanto que o outro é baseado em uma função multivariável. Como medida de eficiência usaremos o Erro Quadrático Médio (MSE) e o Desvio Padrão para determinada quantidade de erros coletados por realização.
+   
+   \section{Metodologia}
+   \noindent
+   Nesta seção faremos uma pequena explanação de como foram gerados os conjuntos de dados que serão usados para mensurar a eficiência do Adaline. Além disso, iremos explicar como ocorreu a normalização dos dados gerados.
+   
+   \subsection{Geração do conjunto de dados 2D}
+   \noindent
+   Para geração dos conjunto de dados 2D, usamos uma função base. Esta função é mostrada abaixo
+   
+   \begin{equation}
+       y(x) = 2x+3.
+   \end{equation}
+   
+   Após gerarmos um conjunto com 1000 entradas e armazenarmos estes dados em um vetor \textbf{x}, aplicamos estes dados em $y$ para formamos um vetor \textbf{y}, com iguais 1000 entradas. No entanto, para tornarmos estes dados gerados um pouco mais realistas, adicionamos um ruido à cada entrada de \textbf{y}. Este ruido é um valor que varia entre $-0.5$ e $0.5$. A Figura 1 mostra como a geração dedados aleatória foi codificada.
+   
+   \begin{figure}[!htb]
+       \centering
+       \includegraphics[width=.55\textwidth]{img1.jpg}
+       \caption{Código para geração de dados 2D}
+       %\label{fig:exampleFig1}
+   \end{figure}
+   
+   Por fim, basta de se concatene os vetores \textbf{x} e \textbf{y} para formarmos um novo conjunto de dados com dimensão $1000\times 2$.
+   
+    \subsection{Geração do conjunto de dados 3D}
+    \noindent
+    De forma semelhante ao conjunto de dados 2D, também foi usada uma função base para a geração do conjunto de dados 3D. Esta função é mostrada abaixo.
+    
+    \begin{equation}
+        y(x_1, x_2) = 2x_1+x_2
+    \end{equation}
+    
+    Neste caso, foram criados 3 vetores com 1000 estradas cada, \textbf{x1}, \textbf{x2} e \textbf{y}. Os vetores \textbf{x1} e \textbf{x2} recebem valores gerados aleatoriamente enquanto que \textbf{y} recebe os valores de \textbf{x1} e \textbf{x2} aplicados em $y$ somados com um ruido. Por fim, concatenamos esses vetores para formarmos um novo conjunto de dados com dimensão $1000\times 3$. A Figura 2 mostra o código para geração deste conjunto de dados.
+    
+    \begin{figure}[!htb]
+        \centering
+        \includegraphics[width=.55\textwidth]{img2.jpg}
+        \caption{Código para geração de dados 3D}
+        %\label{fig:exampleFig1}
+    \end{figure}
+
+    \subsection{Normalização dos dados}
+    \noindent
+    Depois da geração dos conjuntos de dados como mostrado acima, foi necessário normalizá-los. Este normalização se dá de acordo com a Equação 3, que é mostrada abaixo.
+    
+    \begin{equation}
+    x_{i, j}^{\textrm{new}} = \dfrac{x_{i, j}^{\textrm{old}} - \min (\textbf{x}_j)}{\max (\textbf{x}_j)-\min(\textbf{x}_j)}
+    \end{equation}
+    
+    Após a normalização de ambos os conjuntos de dados, estes então preparados para treinamento.
+    
+    \section{Resultados}
+    \noindent
+    Nesta seção mostraremos os resultados obtidos após o treinamento do modelo em questão, para as bases de dados apresentadas acima.
+    
+    \subsection{Resultados para o conjunto de dados 2D}
+    \noindent
+    Para o treinamento do modelo para o conjunto de dados 2D, foram separados de, forma aleatória, 700 amostras formando assim um conjunto de testes. As outras 300 amostras compuseram o conjunto de testes. Os dados e a reta gerada a partir do treinamento são mostrados abaixo.
+    
+    \begin{figure}[!htb]
+        
+        \center
+        \subfigure{\includegraphics[width=7cm]{plot1.jpg}}
+        \qquad
+        \subfigure{\includegraphics[width=7cm]{plot2.jpg}}
+        \caption{Dados gerados juntamente com a reta que os aproxima}
+        
+    \end{figure}
+        
+    \subsection{Resultados para o conjunto de dados 3D}
+    \noindent
+    De forma semelhante a mostrada acima, foram usadas 700 amostras para treinar o modelo e o restante, isto é, 300 amostras, foram usadas para testá-lo. Os dados e o hiperplano que aproxima esses dados são mostrados abaixo, na Figura 4.    
+    
+       
+     \begin{figure}[!htb]
+         
+         \center
+         \subfigure{\includegraphics[width=7cm]{plot3.jpg}}
+         \qquad
+         \subfigure{\includegraphics[width=7cm]{plot4.jpg}}
+         \caption{Dados gerados juntamente com a reta que os aproxima}
+         
+     \end{figure}
+    
+    
+    \subsection{Eficiência do modelo para os conjuntos de dados}
+
+    \noindent
+    Para medirmos a eficiência, foram usados o MSE (Mean Squared Error) e o RMSE (Root Mean Squared Error) que são mostrados abaixo.
+    
+    \begin{equation}
+        \textrm{MSE} = \dfrac{1}{n}\sum_{i=1}^{n}e^2 = \dfrac{1}{n}\sum_{i=1}^{n}(y_d - y_i)^2
+    \end{equation}
+    \begin{equation}
+        \textrm{RMSE} = \sqrt{\textrm{MSE}} = \sqrt{\dfrac{1}{n}\sum_{i=1}^{n}(y_d - y_i)^2}
+    \end{equation}
+    
+    Para avaliarmos uma média desses erros foram feitas um total de 20 execuções seguidas com os dados de treino, isto é, 20 realizações. Os resultados são mostrados na tabela abaixo
+    
+    \begin{center}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{Conjunto de dados} & \textbf{RMSE médio} & \textbf{Desvio padrão}\\ \hline
+            2D& $0.0118$ & $0.0059$\\ \hline
+            3D& $0.0148$ & $0.0077$\\
+            \hline
+        \end{tabular}
+
+    \end{center}
+
+\section{Conclusão}
+\noindent
+Como foi possível verificar, o Adaline é um modelo simples e extremamente eficaz para conjuntos de dados lineares. Isto é provado com os resultados obtidos na seção anterior. Obviamente, na maioria das vezes, os problemas reais são bem mais complexos do que os mostrados nesse documento porém, a implementação deste modelo é, sem dúvida, de extrema importância para qualquer pessoa que queira se aprofundar no estudos das Redes Neurais Artificiais.
+    
+\end{document}
